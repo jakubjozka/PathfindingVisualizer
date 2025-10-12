@@ -105,7 +105,8 @@
                         <DataTemplate>
                             <Border BorderBrush="#BDC3C7" BorderThickness="0.5"
                                     Background="{Binding Type, Converter={StaticResource NodeTypeToColorConverter}}"
-                                    MouseLeftButtonDown="Node_MouseLeftButtonDown">
+                                    MouseLeftButtonDown="Node_MouseLeftButtonDown"
+                                    MouseEnter="Node_MouseEnter">
                             </Border>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>

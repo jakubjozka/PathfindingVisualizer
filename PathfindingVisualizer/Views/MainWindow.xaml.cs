@@ -6,12 +6,11 @@ using PathfindingVisualizer.ViewModels;
 
 namespace PathfindingVisualizer
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         private MainViewModel ViewModel => (MainViewModel)DataContext;
+        private bool _isMouseDown = false;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -44,11 +43,24 @@ namespace PathfindingVisualizer
             BtnClearPath.Click += (s, e) => ViewModel.ClearPath();
             BtnClearGrid.Click += (s, e) => ViewModel.ClearGrid();
             BtnVisualize.Click += async (s, e) => await ViewModel.RunDijsktra();
+
+            GridControl.MouseLeftButtonUp += (s, e) => _isMouseDown = false;
+            GridControl.MouseLeave += (s, e) => _isMouseDown = false;
         }
 
         private void Node_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            _isMouseDown = true;
+
             if (sender is Border border && border.DataContext is Node node)
+            {
+                ViewModel.HandleNodeClick(node);
+            }
+        }
+
+        private void Node_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed && sender is Border border && border.DataContext is Node node)
             {
                 ViewModel.HandleNodeClick(node);
             }
