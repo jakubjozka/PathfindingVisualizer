@@ -146,6 +146,27 @@ namespace PathfindingVisualizer.ViewModels
                 System.Windows.MessageBox.Show("No path found!");
             }
         }
+
+        public async Task RunAStar()
+        {
+            if (Grid.StartNode == null || Grid.EndNode == null)
+            {
+                System.Windows.MessageBox.Show("Please place both Start and End nodes");
+                return;
+            }
+
+            IsRunning = true;
+
+            bool pathFound = await AStar.FindPath(
+                Grid, onNodeVisited: (node) => { }, delayMs: 10);
+
+            IsRunning = false;
+
+            if (!pathFound)
+            {
+                System.Windows.MessageBox.Show("No path found!");
+            }
+        }
     }
 
     public enum DrawMode

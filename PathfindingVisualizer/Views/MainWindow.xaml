@@ -50,10 +50,29 @@
 
                 <!-- Action Buttons -->
                 <GroupBox Header="Actions" Foreground="White" Margin="5">
-                    <StackPanel Orientation="Horizontal">
-                        <Button x:Name="BtnVisualize" Content="Visualize Dijsktra"
-                                Width="140" Height="30" Margin="5"
-                                Background="#27AE60" Foreground="White"
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <ComboBox x:Name="AlgorithmSelector"
+                                  Width="160"
+                                  Height="30"
+                                  Margin="5"
+                                  SelectedIndex="0"
+                                  Foreground="#34495E"
+                                  Background="#34495E"
+                                  BorderBrush="#27AE60"
+                                  BorderThickness="2"
+                                  FontWeight="Bold"
+                                  Cursor="Hand">
+                            <ComboBoxItem Content="Dijkstra" Background="#34495E" Foreground="#34495E"/>
+                            <ComboBoxItem Content="A*" Background="#34495E" Foreground="#34495E"/>
+                        </ComboBox>
+
+                        <Button x:Name="BtnVisualize"
+                                Content="Visualize"
+                                Width="100"
+                                Height="30"
+                                Margin="5"
+                                Background="#27AE60"
+                                Foreground="White"
                                 FontWeight="Bold"/>
                         <Button x:Name="BtnClearPath" Content="Clear Path"
                                 Width="100" Height="30" Margin="5"

@@ -42,7 +42,24 @@ namespace PathfindingVisualizer
 
             BtnClearPath.Click += (s, e) => ViewModel.ClearPath();
             BtnClearGrid.Click += (s, e) => ViewModel.ClearGrid();
-            BtnVisualize.Click += async (s, e) => await ViewModel.RunDijsktra();
+
+            BtnVisualize.Click += async (s, e) =>
+            {
+                var selected = (AlgorithmSelector.SelectedItem as ComboBoxItem)?.Content.ToString();
+
+                switch (selected)
+                {
+                    case "Dijkstra":
+                        await ViewModel.RunDijsktra();
+                        break;
+                    case "A*":
+                        await ViewModel.RunAStar();
+                        break;
+                    default:
+                        MessageBox.Show("Please select an algorithm.");
+                        break;
+                }
+            };
 
             GridControl.MouseLeftButtonUp += (s, e) => _isMouseDown = false;
             GridControl.MouseLeave += (s, e) => _isMouseDown = false;
