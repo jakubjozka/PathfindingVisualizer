@@ -50,10 +50,28 @@ namespace PathfindingVisualizer
                 switch (selected)
                 {
                     case "Dijkstra":
+                        if (!ViewModel.CanRunSinglePath)
+                        {
+                            MessageBox.Show("Dijkstra requires exactly 1 End node. You have " + ViewModel.Grid.EndNodes.Count + " End node(s).");
+                            return;
+                        }
                         await ViewModel.RunDijsktra();
                         break;
                     case "A*":
+                        if (!ViewModel.CanRunSinglePath)
+                        {
+                            MessageBox.Show("A* requires exactly 1 End node. You have " + ViewModel.Grid.EndNodes.Count + " End node(s).");
+                            return;
+                        }
                         await ViewModel.RunAStar();
+                        break;
+                    case "Multi-Target Dijkstra":
+                        if (!ViewModel.CanRunMultiPath)
+                        {
+                            MessageBox.Show("Floyd-Warshall requires at least 2 End nodes. You have " + ViewModel.Grid.EndNodes.Count + " End node(s).");
+                            return;
+                        }
+                        await ViewModel.RunMultiTargetDijkstra();
                         break;
                     default:
                         MessageBox.Show("Please select an algorithm.");

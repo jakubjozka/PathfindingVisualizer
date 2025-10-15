@@ -16,12 +16,14 @@ namespace PathfindingVisualizer.Models
 
         public Node? StartNode { get; set; }
         public Node? EndNode { get; set; }
+        public List<Node> EndNodes { get; set; }
 
         public Grid(int rows, int cols)
         {
             Rows = rows;
             Cols = cols;
             Nodes = new Node[rows, cols];
+            EndNodes = new List<Node>();
 
             InitializeGrid();
         }
@@ -87,6 +89,7 @@ namespace PathfindingVisualizer.Models
 
             StartNode = null;
             EndNode = null;
+            EndNodes.Clear();
         }
 
         public bool IsValidPosition(int row, int col)

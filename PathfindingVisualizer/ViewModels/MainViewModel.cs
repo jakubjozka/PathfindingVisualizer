@@ -36,6 +36,9 @@ namespace PathfindingVisualizer.ViewModels
             }
         }
 
+        public bool CanRunSinglePath => !IsRunning && Grid.EndNodes.Count == 1;
+        public bool CanRunMultiPath => !IsRunning && Grid.EndNodes.Count > 1;
+
         public MainViewModel()
         {
             Grid = new Grid(25, 50); // Changeable
@@ -77,13 +80,26 @@ namespace PathfindingVisualizer.ViewModels
 
         private void SetEndNode(Node node)
         {
-            if (Grid.EndNode != null)
+            if (node.Type == NodeType.End)
             {
-                Grid.EndNode.Type = NodeType.Empty;
+                Grid.EndNodes.Remove(node);
+                node.Type = NodeType.Empty;
+
+                Grid.EndNode = Grid.EndNodes.Count > 0 ? Grid.EndNodes[0] : null;
+            }
+            else
+            {
+                node.Type = NodeType.End;
+                Grid.EndNodes.Add(node);
+
+                if (Grid.EndNode == null)
+                {
+                    Grid.EndNode = node;
+                }
             }
 
-            node.Type = NodeType.End;
-            Grid.EndNode = node;
+            OnPropertyChanged(nameof(CanRunSinglePath));
+            OnPropertyChanged(nameof(CanRunMultiPath));
         }
 
         private void ToggleWall(Node node)
@@ -165,6 +181,27 @@ namespace PathfindingVisualizer.ViewModels
             if (!pathFound)
             {
                 System.Windows.MessageBox.Show("No path found!");
+            }
+        }
+
+        public async Task RunMultiTargetDijkstra()
+        {
+            if (Grid.StartNode == null || Grid.EndNodes.Count == 0)
+            {
+                System.Windows.MessageBox.Show("Please place Start node and at least one End node");
+                return;
+            }
+
+            IsRunning = true;
+
+            bool pathFound = await MultiTargetDijkstra.FindPaths(
+                Grid, onNodeVisited: (node) => { }, delayMs: 5);
+
+            IsRunning = false;
+
+            if (!pathFound)
+            {
+                System.Windows.MessageBox.Show("No paths found!");
             }
         }
     }
