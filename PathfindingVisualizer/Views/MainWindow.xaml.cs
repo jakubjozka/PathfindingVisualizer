@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using PathfindingVisualizer.Algorithms;
 using PathfindingVisualizer.Models;
 using PathfindingVisualizer.ViewModels;
 
@@ -47,36 +48,30 @@ namespace PathfindingVisualizer
             {
                 var selected = (AlgorithmSelector.SelectedItem as ComboBoxItem)?.Content.ToString();
 
-                switch (selected)
+                IPathfindingAlgorithm? algorithm = selected switch
                 {
-                    case "Dijkstra":
-                        if (!ViewModel.CanRunSinglePath)
-                        {
-                            MessageBox.Show("Dijkstra requires exactly 1 End node. You have " + ViewModel.Grid.EndNodes.Count + " End node(s).");
-                            return;
-                        }
-                        await ViewModel.RunDijsktra();
-                        break;
-                    case "A*":
-                        if (!ViewModel.CanRunSinglePath)
-                        {
-                            MessageBox.Show("A* requires exactly 1 End node. You have " + ViewModel.Grid.EndNodes.Count + " End node(s).");
-                            return;
-                        }
-                        await ViewModel.RunAStar();
-                        break;
-                    case "Multi-Target Dijkstra":
-                        if (!ViewModel.CanRunMultiPath)
-                        {
-                            MessageBox.Show("Floyd-Warshall requires at least 2 End nodes. You have " + ViewModel.Grid.EndNodes.Count + " End node(s).");
-                            return;
-                        }
-                        await ViewModel.RunMultiTargetDijkstra();
-                        break;
-                    default:
-                        MessageBox.Show("Please select an algorithm.");
-                        break;
+                    "Dijkstra" => new Dijkstra(),
+                    "A*" => new AStar(),
+                    "Multi-Target Dijkstra" => new MultiTargetDijkstra(),
+                    _ => null
+                };
+
+                bool isSinglePathAlgorithm = algorithm is Dijkstra or AStar;
+                int endNodeCount = ViewModel.Grid.EndNodes.Count;
+
+                if (isSinglePathAlgorithm && endNodeCount != 1)
+                {
+                    MessageBox.Show($"{algorithm.AlgorithmName} requires exactly 1 End node. You have {endNodeCount}.");
+                    return;
                 }
+
+                if (algorithm is MultiTargetDijkstra && endNodeCount < 1)
+                {
+                    MessageBox.Show($"{algorithm.AlgorithmName} requires at least 1 End node.");
+                    return;
+                }
+
+                await ViewModel.RunAlgorithm(algorithm);
             };
 
             GridControl.MouseLeftButtonUp += (s, e) => _isMouseDown = false;

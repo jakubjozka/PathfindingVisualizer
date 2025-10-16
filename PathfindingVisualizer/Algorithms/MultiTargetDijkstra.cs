@@ -2,16 +2,17 @@
 
 namespace PathfindingVisualizer.Algorithms
 {
-    public class MultiTargetDijkstra
+    public class MultiTargetDijkstra : IPathfindingAlgorithm
     {
         // I wanted to make Floyd-Warshall work for multiple targets, but it's not ideal for visualization
         // Instead, I implemented a multi-target Dijkstra as it's more efficient and suitable for visualization
-        public static async Task<bool> FindPaths(Grid grid, Action<Node> onNodeVisited, int delayMs = 10)
+        public string AlgorithmName => "Multi-Target Dijkstra";
+        public async Task<bool> FindPathAsync(Grid grid, Action<Node> onNodeVisited, int delayMs = 10)
         {
             if (grid.StartNode == null || grid.EndNodes.Count == 0)
                 return false;
 
-            grid.ResetForPathFinding();
+            grid.ResetForPathfinding();
 
             var startNode = grid.StartNode;
 

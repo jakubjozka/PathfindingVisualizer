@@ -190,6 +190,27 @@
                     </StackPanel>
                 </GroupBox>
 
+                <GroupBox Header="Speed" Foreground="White" Margin="5">
+                    <StackPanel Orientation="Vertical" Width="150">
+                        <TextBlock Text="{Binding AnimationDelay, StringFormat='Delay: {0}ms'}" 
+                                   Foreground="White" 
+                                   HorizontalAlignment="Center"
+                                   Margin="0,0,0,5"/>
+                        <Slider x:Name="SpeedSlider"
+                                Minimum="1"
+                                Maximum="50"
+                                Value="{Binding AnimationDelay, Mode=TwoWay}"
+                                TickFrequency="5"
+                                IsSnapToTickEnabled="True"
+                                VerticalAlignment="Center"
+                                Cursor="Hand"/>
+                        <Grid Margin="0,2,0,0">
+                            <TextBlock Text="Fast" Foreground="#95A5A6" FontSize="10" HorizontalAlignment="Left"/>
+                            <TextBlock Text="Slow" Foreground="#95A5A6" FontSize="10" HorizontalAlignment="Right"/>
+                        </Grid>
+                    </StackPanel>
+                </GroupBox>
+
                 <!-- Legend -->
                 <GroupBox Header="Legend" Foreground="White" Margin="5">
                     <StackPanel Orientation="Horizontal">

@@ -65,7 +65,7 @@ namespace PathfindingVisualizer.Models
             return neighbors;
         }
 
-        public void ResetForPathFinding()
+        public void ResetForPathfinding()
         {
             for (int row = 0; row < Rows; row++)
             {

@@ -7,14 +7,15 @@ using PathfindingVisualizer.Models;
 
 namespace PathfindingVisualizer.Algorithms
 {
-    public class AStar
+    public class AStar : IPathfindingAlgorithm
     {
-        public static async Task<bool> FindPath(Grid grid, Action<Node> onNodeVisited, int delayMs = 10)
+        public string AlgorithmName => "A*";
+        public async Task<bool> FindPathAsync(Grid grid, Action<Node> onNodeVisited, int delayMs = 10)
         {
             if (grid.StartNode == null || grid.EndNode == null)
                 return false;
 
-            grid.ResetForPathFinding();
+            grid.ResetForPathfinding();
 
             var startNode = grid.StartNode;
             var endNode = grid.EndNode;

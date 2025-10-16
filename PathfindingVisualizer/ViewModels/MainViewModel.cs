@@ -36,8 +36,20 @@ namespace PathfindingVisualizer.ViewModels
             }
         }
 
+        private int _animationDelay = 10;
+        public int AnimationDelay
+        {
+            get => _animationDelay;
+            set
+            {
+                _animationDelay = value;
+                OnPropertyChanged(nameof(AnimationDelay));
+            }
+        }
+
         public bool CanRunSinglePath => !IsRunning && Grid.EndNodes.Count == 1;
-        public bool CanRunMultiPath => !IsRunning && Grid.EndNodes.Count > 1;
+        public bool CanRunMultiPath => !IsRunning && Grid.EndNodes.Count >= 1;
+
 
         public MainViewModel()
         {
@@ -132,7 +144,7 @@ namespace PathfindingVisualizer.ViewModels
         public void ClearPath()
         {
             if (IsRunning) return;
-            Grid.ResetForPathFinding();
+            Grid.ResetForPathfinding();
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -142,66 +154,30 @@ namespace PathfindingVisualizer.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public async Task RunDijsktra()
+        public async Task RunAlgorithm(IPathfindingAlgorithm algorithm)
         {
-            if (Grid.StartNode == null || Grid.EndNode == null)
+            if (Grid.StartNode == null)
             {
-                System.Windows.MessageBox.Show("Please place both Start and End nodes");
+                System.Windows.MessageBox.Show("Please place a Start node!");
+                return;
+            }
+
+            if (Grid.EndNodes.Count == 0)
+            {
+                System.Windows.MessageBox.Show("Please place at least one End node!");
                 return;
             }
 
             IsRunning = true;
 
-            bool pathFound = await Dijkstra.FindPath(
-                Grid, onNodeVisited: (node) => { }, delayMs: 10);
+            bool pathFound = await algorithm.FindPathAsync(
+                Grid, onNodeVisited: (node) => { }, delayMs: AnimationDelay);
 
             IsRunning = false;
 
             if (!pathFound)
             {
-                System.Windows.MessageBox.Show("No path found!");
-            }
-        }
-
-        public async Task RunAStar()
-        {
-            if (Grid.StartNode == null || Grid.EndNode == null)
-            {
-                System.Windows.MessageBox.Show("Please place both Start and End nodes");
-                return;
-            }
-
-            IsRunning = true;
-
-            bool pathFound = await AStar.FindPath(
-                Grid, onNodeVisited: (node) => { }, delayMs: 10);
-
-            IsRunning = false;
-
-            if (!pathFound)
-            {
-                System.Windows.MessageBox.Show("No path found!");
-            }
-        }
-
-        public async Task RunMultiTargetDijkstra()
-        {
-            if (Grid.StartNode == null || Grid.EndNodes.Count == 0)
-            {
-                System.Windows.MessageBox.Show("Please place Start node and at least one End node");
-                return;
-            }
-
-            IsRunning = true;
-
-            bool pathFound = await MultiTargetDijkstra.FindPaths(
-                Grid, onNodeVisited: (node) => { }, delayMs: 5);
-
-            IsRunning = false;
-
-            if (!pathFound)
-            {
-                System.Windows.MessageBox.Show("No paths found!");
+                System.Windows.MessageBox.Show($"No path found using {algorithm.AlgorithmName}!");
             }
         }
     }
