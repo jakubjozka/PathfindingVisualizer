@@ -6,6 +6,7 @@ using PathfindingVisualizer.Models;
 
 namespace PathfindingVisualizer.Helpers
 {
+    // Converts NodeType to corresponding SolidColorBrush for UI representation
     public class NodeTypeToColorConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

@@ -6,6 +6,12 @@ namespace PathfindingVisualizer.Algorithms
     {
         // I wanted to make Floyd-Warshall work for multiple targets, but it's not ideal for visualization
         // Instead, I implemented a multi-target Dijkstra as it's more efficient and suitable for visualization
+
+        // Multi-Target Dijkstra - Finds shortest paths from start to multiple end nodes
+        // Extension of Dijkstra that continues exploring until all targets are found
+        // More efficient than running single Dijkstra multiple times
+        // Useful for finding paths to several destinations simultaneously
+        // Time Complexity: O(V²) or O((V + E) log V) with proper priority queue
         public string AlgorithmName => "Multi-Target Dijkstra";
         public async Task<bool> FindPathAsync(Grid grid, Action<Node> onNodeVisited, int delayMs = 10)
         {

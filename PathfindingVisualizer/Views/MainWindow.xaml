@@ -190,6 +190,7 @@
                     </StackPanel>
                 </GroupBox>
 
+                <!-- Speed Slider -->
                 <GroupBox Header="Speed" Foreground="White" Margin="5">
                     <StackPanel Orientation="Vertical" Width="150">
                         <TextBlock Text="{Binding AnimationDelay, StringFormat='Delay: {0}ms'}" 

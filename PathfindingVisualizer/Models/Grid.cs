@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 
 namespace PathfindingVisualizer.Models
 {
+    // Represents the grid of nodes for pathfinding
     public class Grid
     {
         public int Rows { get; private set; }

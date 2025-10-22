@@ -34,6 +34,7 @@ namespace PathfindingVisualizer
             GridControl.ItemsSource = allNodes;
         }
 
+        // Setup event handlers for UI controls
         private void SetupEventHandlers()
         {
             RadioStart.Checked += (s, e) => ViewModel.CurrentDrawMode = DrawMode.Start;
@@ -55,6 +56,11 @@ namespace PathfindingVisualizer
                     "Multi-Target Dijkstra" => new MultiTargetDijkstra(),
                     _ => null
                 };
+
+                if (algorithm == null)
+                {
+                    return;
+                }
 
                 bool isSinglePathAlgorithm = algorithm is Dijkstra or AStar;
                 int endNodeCount = ViewModel.Grid.EndNodes.Count;
@@ -78,6 +84,8 @@ namespace PathfindingVisualizer
             GridControl.MouseLeave += (s, e) => _isMouseDown = false;
         }
 
+
+        // Event handlers for node interactions
         private void Node_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             _isMouseDown = true;

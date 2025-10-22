@@ -8,6 +8,7 @@ using System.Net.NetworkInformation;
 
 namespace PathfindingVisualizer.Models
 {
+    // Represents a single node in the grid for pathfinding
     public class Node : INotifyPropertyChanged
     {
         public int Row { get; set; }

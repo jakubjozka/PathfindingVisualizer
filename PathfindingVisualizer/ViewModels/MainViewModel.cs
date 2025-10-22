@@ -10,6 +10,7 @@ using PathfindingVisualizer.Algorithms;
 
 namespace PathfindingVisualizer.ViewModels
 {
+    // ViewModel for the main application logic
     public class MainViewModel : INotifyPropertyChanged
     {
         public Grid Grid { get; private set; }

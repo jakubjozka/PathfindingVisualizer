@@ -9,6 +9,11 @@ namespace PathfindingVisualizer.Algorithms
 {
     public class AStar : IPathfindingAlgorithm
     {
+        // A* Algorithm - Finds the shortest path using heuristic guidance
+        // Uses f(n) = g(n) + h(n) where g is distance from start, h is estimated distance to goal
+        // More efficient than Dijkstra as it explores fewer nodes by heading toward the goal
+        // Guarantees shortest path if heuristic is admissible (never overestimates)
+        // Time Complexity: O((V + E) log V)
         public string AlgorithmName => "A*";
         public async Task<bool> FindPathAsync(Grid grid, Action<Node> onNodeVisited, int delayMs = 10)
         {
