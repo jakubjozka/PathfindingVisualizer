@@ -167,6 +167,7 @@
                             </ComboBox.ItemContainerStyle>
                             <ComboBoxItem Content="Dijkstra"/>
                             <ComboBoxItem Content="A*"/>
+                            <ComboBoxItem Content="BFS"/>
                             <ComboBoxItem Content="Multi-Target Dijkstra"/>
                         </ComboBox>
                         

@@ -53,6 +53,7 @@ namespace PathfindingVisualizer
                 {
                     "Dijkstra" => new Dijkstra(),
                     "A*" => new AStar(),
+                    "BFS" => new BFS(),
                     "Multi-Target Dijkstra" => new MultiTargetDijkstra(),
                     _ => null
                 };
@@ -62,7 +63,7 @@ namespace PathfindingVisualizer
                     return;
                 }
 
-                bool isSinglePathAlgorithm = algorithm is Dijkstra or AStar;
+                bool isSinglePathAlgorithm = algorithm is Dijkstra or AStar or BFS;
                 int endNodeCount = ViewModel.Grid.EndNodes.Count;
 
                 if (isSinglePathAlgorithm && endNodeCount != 1)
