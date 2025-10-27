@@ -35,27 +35,32 @@ namespace PathfindingVisualizer.Algorithms
 
             while (queue.Count > 0)
             {
-                Node current = queue.Dequeue();
+                Node currentNode = queue.Dequeue();
 
-                if (current.Type != NodeType.Start && current.Type != NodeType.End)
+                if (currentNode.Type != NodeType.Start && currentNode.Type != NodeType.End)
                 {
-                    current.Type = NodeType.Visited;
-                    onNodeVisited(current);
-                    await Task.Delay(delayMs * current.Weight);
+                    if (currentNode.Type == NodeType.Grass || currentNode.Type == NodeType.Mud)
+                    {
+                        currentNode.BaseTerrainType = currentNode.Type;
+                    }
+
+                    currentNode.Type = NodeType.Visited;
+                    onNodeVisited(currentNode);
+                    await Task.Delay(delayMs * currentNode.Weight);
                 }
 
-                if (current == endNode)
+                if (currentNode == endNode)
                 {
                     ReconstructPath(endNode);
                     return true;
                 }
 
-                foreach (Node neighbor in grid.GetNeighbors(current))
+                foreach (Node neighbor in grid.GetNeighbors(currentNode))
                 {
                     if (!visited.Contains(neighbor))
                     {
                         visited.Add(neighbor);
-                        neighbor.Parent = current;
+                        neighbor.Parent = currentNode;
                         queue.Enqueue(neighbor);
                     }
                 }
@@ -64,14 +69,25 @@ namespace PathfindingVisualizer.Algorithms
             return false;
         }
 
-        private void ReconstructPath(Node endNode)
+        private static void ReconstructPath(Node endNode)
         {
-            Node? current = endNode.Parent;
+            Node? currentNode = endNode.Parent;
 
-            while (current != null && current.Type != NodeType.Start)
+            while (currentNode != null && currentNode.Type != NodeType.Start)
             {
-                current.Type = NodeType.Path;
-                current = current.Parent;
+                if (currentNode.Type == NodeType.Grass || currentNode.Type == NodeType.Mud || currentNode.Type == NodeType.Visited)
+                {
+                    if (currentNode.BaseTerrainType == NodeType.Empty)
+                    {
+                        if (currentNode.Type == NodeType.Grass || currentNode.Type == NodeType.Mud)
+                        {
+                            currentNode.BaseTerrainType = currentNode.Type;
+                        }
+                    }
+                }
+
+                currentNode.Type = NodeType.Path;
+                currentNode = currentNode.Parent;
             }
         }
     }

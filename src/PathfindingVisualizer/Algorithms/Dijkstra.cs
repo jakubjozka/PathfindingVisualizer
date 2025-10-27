@@ -37,7 +37,12 @@ namespace PathfindingVisualizer.Algorithms
 
                 if (currentNode.Type != NodeType.Start && currentNode.Type != NodeType.End)
                 {
-                    currentNode.Type = NodeType.Visited;
+                    if (currentNode.Type == NodeType.Grass || currentNode.Type == NodeType.Mud)
+                    {
+                        currentNode.BaseTerrainType = currentNode.Type;
+                    }
+
+                        currentNode.Type = NodeType.Visited;
                     onNodeVisited(currentNode);
                     await Task.Delay(delayMs * currentNode.Weight);
                 }
@@ -46,7 +51,7 @@ namespace PathfindingVisualizer.Algorithms
 
                 if (currentNode == endNode)
                 {
-                    ReconstruchPath(endNode);
+                    ReconstructPath(endNode);
                     return true;
                 }
 
@@ -72,12 +77,23 @@ namespace PathfindingVisualizer.Algorithms
             return false;
         }
 
-        private static void ReconstruchPath(Node endNode)
+        private static void ReconstructPath(Node endNode)
         {
             Node? currentNode = endNode.Parent;
 
             while (currentNode != null && currentNode.Type != NodeType.Start)
             {
+                if (currentNode.Type == NodeType.Grass || currentNode.Type == NodeType.Mud || currentNode.Type == NodeType.Visited)
+                {
+                    if (currentNode.BaseTerrainType == NodeType.Empty)
+                    {
+                        if (currentNode.Type == NodeType.Grass || currentNode.Type == NodeType.Mud)
+                        {
+                            currentNode.BaseTerrainType = currentNode.Type;
+                        }
+                    }
+                }
+
                 currentNode.Type = NodeType.Path;
                 currentNode = currentNode.Parent;
             }

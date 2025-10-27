@@ -48,11 +48,26 @@ namespace PathfindingVisualizer.Models
             }
         }
 
+        private NodeType _baseTerrainType;
+        public NodeType BaseTerrainType
+        {
+            get => _baseTerrainType;
+            set
+            {
+                if (_baseTerrainType != value)
+                {
+                    _baseTerrainType = value;
+                    OnPropertyChanged(nameof(BaseTerrainType));
+                }
+            }
+        }
+
         public Node(int row, int col)
         {
             Row = row;
             Col = col;
             Type = NodeType.Empty;
+            BaseTerrainType = NodeType.Empty;
             Weight = 1;
             GCost = int.MaxValue;
             HCost = 0;
@@ -61,6 +76,11 @@ namespace PathfindingVisualizer.Models
 
         public void Reset()
         {
+            if (Type == NodeType.Visited || Type == NodeType.Path)
+            {
+                Type = BaseTerrainType;
+            }
+
             if (Type != NodeType.Wall && Type != NodeType.Start && Type != NodeType.End && Type != NodeType.Mud && Type != NodeType.Grass)
             {
                 Type = NodeType.Empty;

@@ -48,22 +48,27 @@ namespace PathfindingVisualizer.Algorithms
             while (openSet.Count > 0)
             {
                 openSet.Sort((a, b) => distances[a].CompareTo(distances[b]));
-                Node current = openSet[0];
+                Node currentNode = openSet[0];
                 openSet.RemoveAt(0);
 
-                if (visited.Contains(current))
+                if (visited.Contains(currentNode))
                     continue;
 
-                visited.Add(current);
+                visited.Add(currentNode);
 
-                if (current.Type != NodeType.Start && current.Type != NodeType.End)
+                if (currentNode.Type != NodeType.Start && currentNode.Type != NodeType.End)
                 {
-                    current.Type = NodeType.Visited;
-                    onNodeVisited(current);
-                    await Task.Delay(delayMs * current.Weight);
+                    if (currentNode.Type == NodeType.Grass || currentNode.Type == NodeType.Mud)
+                    {
+                        currentNode.BaseTerrainType = currentNode.Type;
+                    }
+
+                    currentNode.Type = NodeType.Visited;
+                    onNodeVisited(currentNode);
+                    await Task.Delay(delayMs * currentNode.Weight);
                 }
 
-                if (grid.EndNodes.Contains(current))
+                if (grid.EndNodes.Contains(currentNode))
                 {
                     foundEndNodes++;
                     if (foundEndNodes >= grid.EndNodes.Count)
@@ -72,17 +77,17 @@ namespace PathfindingVisualizer.Algorithms
                     }
                 }
 
-                foreach (Node neighbor in grid.GetNeighbors(current))
+                foreach (Node neighbor in grid.GetNeighbors(currentNode))
                 {
                     if (visited.Contains(neighbor))
                         continue;
 
-                    int newDist = distances[current] + neighbor.Weight;
+                    int newDist = distances[currentNode] + neighbor.Weight;
 
                     if (newDist < distances[neighbor])
                     {
                         distances[neighbor] = newDist;
-                        parents[neighbor] = current;
+                        parents[neighbor] = currentNode;
 
                         if (!openSet.Contains(neighbor))
                         {
@@ -105,19 +110,30 @@ namespace PathfindingVisualizer.Algorithms
 
         private static void ReconstructPath(Node endNode, Dictionary<Node, Node?> parents)
         {
-            Node? current = endNode;
+            Node? currentNode = endNode;
             List<Node> path = new List<Node>();
 
-            while (current != null && parents.ContainsKey(current))
+            while (currentNode != null && parents.ContainsKey(currentNode))
             {
-                path.Add(current);
-                current = parents[current];
+                path.Add(currentNode);
+                currentNode = parents[currentNode];
             }
 
             foreach (var node in path)
             {
                 if (node.Type != NodeType.Start && node.Type != NodeType.End)
                 {
+                    if (node.Type == NodeType.Grass || node.Type == NodeType.Mud || node.Type == NodeType.Visited)
+                    {
+                        if (node.BaseTerrainType == NodeType.Empty)
+                        {
+                            if (node.Type == NodeType.Grass || node.Type == NodeType.Mud)
+                            {
+                                node.BaseTerrainType = node.Type;
+                            }
+                        }
+                    }
+
                     node.Type = NodeType.Path;
                 }
             }

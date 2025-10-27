@@ -91,6 +91,7 @@ namespace PathfindingVisualizer.ViewModels
             if (node.Type == NodeType.Start || node.Type == NodeType.End) return;
 
             node.Type = terraingType;
+            node.BaseTerrainType = terraingType;
             node.Weight = weight;
         }
 
@@ -160,6 +161,7 @@ namespace PathfindingVisualizer.ViewModels
             }
 
             node.Type = NodeType.Empty;
+            node.BaseTerrainType = NodeType.Empty;
             node.Weight = 1;
         }
 
