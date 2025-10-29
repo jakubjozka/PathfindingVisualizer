@@ -233,35 +233,41 @@
 
         <!-- Legend -->
         <Border Grid.Row="1" Background="#ECF0F1" Padding="10">
-            <GroupBox Grid.Row="1" Header="Legend" Foreground="#2C3E50" Margin="5" HorizontalAlignment="Center">
+            <GroupBox Grid.Row="1" Header="Legend" Foreground="Black" Margin="5" HorizontalAlignment="Center" BorderBrush="#2C3E50" BorderThickness="1">
                 <WrapPanel Orientation="Horizontal" MaxWidth="1100" >
                     <StackPanel Orientation="Horizontal" Margin="8, 3">
                         <Border Width="16" Height="16" Background="#2ECC71" Margin="0,0,4,0"/>
-                        <TextBlock Text="Start" Foreground="#2C3E50" VerticalAlignment="Center" FontSize="11"/>
+                        <TextBlock Text="Start" Foreground="Black" VerticalAlignment="Center" FontSize="11" FontStyle="Italic"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="8, 3">
                         <Border Width="16" Height="16" Background="#E74C3C" Margin="0,0,4,0"/>
-                        <TextBlock Text="End" Foreground="#2C3E50" VerticalAlignment="Center" FontSize="11"/>
+                        <TextBlock Text="End" Foreground="Black" VerticalAlignment="Center" FontSize="11" FontStyle="Italic"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="8, 3">
                         <Border Width="16" Height="16" Background="#34495E" Margin="0,0,4,0"/>
-                        <TextBlock Text="Wall" Foreground="#2C3E50" VerticalAlignment="Center" FontSize="11"/>
+                        <TextBlock Text="Wall" Foreground="Black" VerticalAlignment="Center" FontSize="11" FontStyle="Italic"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="8, 3">
                         <Border Width="16" Height="16" Background="#90EE90" Margin="0,0,4,0"/>
-                        <TextBlock Text="Grass (2x)" Foreground="#2C3E50" VerticalAlignment="Center" FontSize="11"/>
+                        <TextBlock Foreground="Black" VerticalAlignment="Center" FontSize="11">
+                            <Run Text="Grass" FontStyle="Italic"/>
+                            <Run Text="(2x)"/>
+                        </TextBlock>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="8, 3">
                         <Border Width="16" Height="16" Background="#8B4513" Margin="0,0,4,0"/>
-                        <TextBlock Text="Mud (5x)" Foreground="#2C3E50" VerticalAlignment="Center" FontSize="11"/>
+                        <TextBlock Foreground="Black" VerticalAlignment="Center" FontSize="11">
+                            <Run Text="Mud" FontStyle="Italic"/>
+                            <Run Text="(5x)"/>
+                        </TextBlock>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="8, 3">
                         <Border Width="16" Height="16" Background="#3498DB" Margin="0,0,4,0"/>
-                        <TextBlock Text="Visited" Foreground="#2C3E50" VerticalAlignment="Center" FontSize="11"/>
+                        <TextBlock Text="Visited" Foreground="Black" VerticalAlignment="Center" FontSize="11" FontStyle="Italic"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="8, 3">
                         <Border Width="16" Height="16" Background="#F39C12" Margin="0,0,4,0"/>
-                        <TextBlock Text="Path" Foreground="#2C3E50" VerticalAlignment="Center" FontSize="11"/>
+                        <TextBlock Text="Path" Foreground="Black" VerticalAlignment="Center" FontSize="11" FontStyle="Italic"/>
                     </StackPanel>
                 </WrapPanel>
             </GroupBox>
