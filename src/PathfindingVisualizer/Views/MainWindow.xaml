@@ -185,6 +185,7 @@
                             <ComboBoxItem Content="A*"/>
                             <ComboBoxItem Content="BFS"/>
                             <ComboBoxItem Content="Multi-Target Dijkstra"/>
+                            <ComboBoxItem Content="Bellman-Ford"/>
                         </ComboBox>
 
                         <Button x:Name="BtnVisualize"

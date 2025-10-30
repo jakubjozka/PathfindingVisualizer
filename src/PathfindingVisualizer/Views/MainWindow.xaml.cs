@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Globalization;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using PathfindingVisualizer.Algorithms;
@@ -55,6 +56,9 @@ namespace PathfindingVisualizer
 
             BtnVisualize.Click += async (s, e) =>
             {
+                if (ViewModel.IsRunning)
+                    return;
+
                 var selected = (AlgorithmSelector.SelectedItem as ComboBoxItem)?.Content.ToString();
 
                 IPathfindingAlgorithm? algorithm = selected switch
@@ -63,6 +67,7 @@ namespace PathfindingVisualizer
                     "A*" => new AStar(),
                     "BFS" => new BFS(),
                     "Multi-Target Dijkstra" => new MultiTargetDijkstra(),
+                    "Bellman-Ford" => new BellmanFord(),
                     _ => null
                 };
 
@@ -72,6 +77,7 @@ namespace PathfindingVisualizer
                 }
 
                 bool isSinglePathAlgorithm = algorithm is Dijkstra or AStar or BFS;
+                bool isMultiPathAlgorithm = algorithm is MultiTargetDijkstra or BellmanFord;
                 int endNodeCount = ViewModel.Grid.EndNodes.Count;
 
                 if (isSinglePathAlgorithm && endNodeCount != 1)
@@ -80,7 +86,7 @@ namespace PathfindingVisualizer
                     return;
                 }
 
-                if (algorithm is MultiTargetDijkstra && endNodeCount < 1)
+                if (isMultiPathAlgorithm && endNodeCount < 1)
                 {
                     MessageBox.Show($"{algorithm.AlgorithmName} requires at least 1 End node.");
                     return;
