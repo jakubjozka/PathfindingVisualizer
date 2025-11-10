@@ -219,7 +219,7 @@
                                 Minimum="1"
                                 Maximum="50"
                                 Value="{Binding AnimationDelay, Mode=TwoWay}"
-                                TickFrequency="5"
+                                TickFrequency="1"
                                 IsSnapToTickEnabled="True"
                                 VerticalAlignment="Center"
                                 Cursor="Hand"/>
