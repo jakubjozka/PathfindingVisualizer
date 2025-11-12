@@ -11,5 +11,6 @@ namespace PathfindingVisualizer.Algorithms
     {
         Task<bool> FindPathAsync(Grid grid, Action<Node> onNodeVisited, int delayMs = 10);
         string AlgorithmName { get; }
+        string ToolTip { get; }
     }
 }

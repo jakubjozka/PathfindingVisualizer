@@ -5,15 +5,10 @@ namespace PathfindingVisualizer.Algorithms
     public class BellmanFord : IPathfindingAlgorithm
     {
         public string AlgorithmName => "Bellman-Ford (Multi-Target)";
+        public string ToolTip => "Finds shortest paths from start to all nodes using edge relaxation.\nRepeatedly updates distances by checking all edges.\nCan detect negative cycles and works with negative weights.\nSlower than Dijkstra but more versatile.\nTime Complexity: O(V × E)";
 
         public async Task<bool> FindPathAsync(Grid grid, Action<Node> onNodeVisited, int delayMs = 10)
         {
-            // Bellman-Ford Algorithm - Finds shortest paths from start to all nodes
-            // Uses edge relaxation: repeatedly updates distances by checking all edges
-            // Can detect negative cycles (not applicable here but part of the algorithm)
-            // Slower than Dijkstra but works with negative weights
-            // Time Complexity: O(V × E)
-
             if (grid.StartNode == null || grid.EndNodes.Count == 0)
                 return false;
 

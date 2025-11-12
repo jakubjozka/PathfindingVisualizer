@@ -9,11 +9,8 @@ namespace PathfindingVisualizer.Algorithms
 {
     public class Dijkstra : IPathfindingAlgorithm
     {
-        // Dijkstra's Algorithm - Finds the shortest path between two nodes
-        // Uses a priority queue to explore nodes in order of distance from start
-        // Guarantees the shortest path but explores many nodes
-        // Time Complexity: O(V²) or O((V + E) log V) with proper priority queue
         public string AlgorithmName => "Dijkstra";
+        public string ToolTip => "Finds the shortest path between two nodes.\nUses a priority queue to explore nodes in order of distance from start.\nGuarantees the shortest path but explores many nodes.\nTime Complexity: O(V²) or O((V + E) log V)";
         public async Task<bool> FindPathAsync(Grid grid, Action<Node> onNodeVisited, int delayMs = 10)
         {
             if (grid.StartNode == null || grid.EndNode == null)

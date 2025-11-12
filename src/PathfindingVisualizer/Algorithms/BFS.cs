@@ -10,14 +10,10 @@ namespace PathfindingVisualizer.Algorithms
     public class BFS : IPathfindingAlgorithm
     {
         public string AlgorithmName => "BFS";
+        public string ToolTip => "Explores nodes level by level from the start.\nUses a queue to explore all neighbors at current depth before going deeper.\nGuarantees shortest path in unweighted grids.\nDoes not consider edge weights - treats all edges equally.\nTime Complexity: O(V + E)";
 
         public async Task<bool> FindPathAsync(Grid grid, Action<Node> onNodeVisited, int delayMs = 10)
         {
-            // BFS (Breadth-First Search) - Explores nodes level by level
-            // Uses a queue to explore all neighbors at current depth before going deeper
-            // Guarantees shortest path in unweighted graphs
-            // Does not use distance costs - treats all edges equally
-            // Time Complexity: O(V + E)
 
             if (grid.StartNode == null || grid.EndNode == null)
                 return false;

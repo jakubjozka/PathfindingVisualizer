@@ -51,6 +51,8 @@ namespace PathfindingVisualizer
                 }
             };
 
+            SetAlgorithmToolTips();
+
             BtnClearPath.Click += (s, e) => ViewModel.ClearPath();
             BtnClearGrid.Click += (s, e) => ViewModel.ClearGrid();
 
@@ -99,6 +101,26 @@ namespace PathfindingVisualizer
             GridControl.MouseLeave += (s, e) => _isMouseDown = false;
         }
 
+        private void SetAlgorithmToolTips()
+        {
+            var algorithms = new Dictionary<string, IPathfindingAlgorithm>
+            {
+                { "Dijkstra", new Dijkstra() },
+                { "A*", new AStar() },
+                { "BFS", new BFS() },
+                { "Multi-Target Dijkstra", new MultiTargetDijkstra() },
+                { "Bellman-Ford", new BellmanFord() }
+            };
+
+            foreach (ComboBoxItem item in AlgorithmSelector.Items)
+            {
+                string? content = item.Content.ToString();
+                if (content != null && algorithms.ContainsKey(content))
+                {
+                    item.ToolTip = algorithms[content].ToolTip;
+                }
+            }
+        }
         private void UpdateTerrainMode()
         {
             var selected = (TerrainSelector.SelectedItem as ComboBoxItem)?.Content.ToString();
