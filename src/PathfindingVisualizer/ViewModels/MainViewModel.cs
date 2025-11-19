@@ -48,6 +48,61 @@ namespace PathfindingVisualizer.ViewModels
             }
         }
 
+        private int _nodesExplored;
+        public int NodesExplored
+        { 
+            get => _nodesExplored;
+            set
+            {
+                _nodesExplored = value;
+                OnPropertyChanged(nameof(NodesExplored));
+            }
+        }
+
+        private int _pathLength;
+        public int PathLength
+        {
+            get => _pathLength;
+            set
+            {
+                _pathLength = value;
+                OnPropertyChanged(nameof(PathLength));
+            }
+        }
+
+        private double _timeTaken;
+        public double TimeTaken
+        {
+            get => _timeTaken;
+            set
+            {
+                _timeTaken = value;
+                OnPropertyChanged(nameof(TimeTaken));
+            }
+        }
+
+        private int _pathCost;
+        public int PathCost
+        {
+            get => _pathCost;
+            set
+            {
+                _pathCost = value;
+                OnPropertyChanged(nameof(PathCost));
+            }
+        }
+
+        private string _currentAlgorithm = "None";
+        public string CurrentAlgorithm
+        {
+            get => _currentAlgorithm;
+            set
+            {
+                _currentAlgorithm = value;
+                OnPropertyChanged(nameof(CurrentAlgorithm));
+            }
+        }
+
         public bool CanRunSinglePath => !IsRunning && Grid.EndNodes.Count == 1;
         public bool CanRunMultiPath => !IsRunning && Grid.EndNodes.Count >= 1;
 
@@ -198,17 +253,60 @@ namespace PathfindingVisualizer.ViewModels
                 return;
             }
 
+            NodesExplored = 0;
+            PathLength = 0;
+            PathCost = 0;
+            CurrentAlgorithm = algorithm.AlgorithmName;
+
             IsRunning = true;
 
+            var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+
             bool pathFound = await algorithm.FindPathAsync(
-                Grid, onNodeVisited: (node) => { }, delayMs: AnimationDelay);
+                Grid, onNodeVisited: (node) => 
+                {
+                    NodesExplored++;
+                },
+                delayMs: AnimationDelay);
+
+            stopwatch.Stop();
+            TimeTaken = stopwatch.Elapsed.TotalSeconds;
 
             IsRunning = false;
 
-            if (!pathFound)
+            if (pathFound)
+            {
+                CalculatePathStastistics();
+            }
+            else
             {
                 System.Windows.MessageBox.Show($"No path found using {algorithm.AlgorithmName}!");
             }
+        }
+
+        private void CalculatePathStastistics()
+        {
+            int totalPathLength = 0;
+            int totalPathCost = 0;
+
+            foreach (var endNode in Grid.EndNodes)
+            {
+                Node? currentNode = endNode;
+                int pathLength = 0;
+                int pathCost = 0;
+
+                while (currentNode != null && currentNode.Parent != null)
+                {
+                    pathLength++;
+                    pathCost += currentNode.Weight;
+                    currentNode = currentNode.Parent;
+                }
+                totalPathLength += pathLength;
+                totalPathCost += pathCost;
+            }
+
+            PathLength = totalPathLength;
+            PathCost = totalPathCost;
         }
     }
 
